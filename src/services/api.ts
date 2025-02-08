@@ -2,7 +2,7 @@ import axios from "axios"
 // import dotenv from "dotenv"
 // dotenv.config()
 
-const API_URL = "http://localhost:3000/api"
+const API_URL = "https://event-mgmt-backend.onrender.com/api"
 
 const api = axios.create({
   baseURL: API_URL,

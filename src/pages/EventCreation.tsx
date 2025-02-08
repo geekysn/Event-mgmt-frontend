@@ -16,7 +16,7 @@ const EventCreation: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      console.log(name, description, date, venue, category, capacity, image)
+      // console.log(name, description, date, venue, category, capacity, image)
       const formData = new FormData()
       formData.append("name", name)
       formData.append("description", description)
@@ -28,9 +28,9 @@ const EventCreation: React.FC = () => {
         formData.append("image", image)
       }
       // Proper way to debug FormData
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
+    // for (const pair of formData.entries()) {
+    //   console.log(`${pair[0]}: ${pair[1]}`);
+    // }
       await createEvent(formData)
       navigate("/events")
     } catch (error) {
