@@ -3,6 +3,18 @@ import { AxiosError } from "axios"
 // import dotenv from "dotenv"
 // dotenv.config()
 
+interface User {
+  id: string
+  name: string
+  email: string
+  role?: string
+}
+
+interface AuthResponse {
+  token: string;
+  user: User;
+}
+
 const API_URL = "https://event-mgmt-backend.onrender.com/api"
 
 const api = axios.create({
@@ -19,7 +31,7 @@ api.interceptors.request.use((config: any) => {
 
 export const login = async (email: string, password: string) => {
   try {
-    const response = await api.post<{ token: string }>('/auth/login', { email, password });
+    const response = await api.post<AuthResponse>('/auth/login', { email, password });
     
     // Store token in localStorage
     if (response.data.token) {
