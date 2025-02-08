@@ -1,4 +1,5 @@
 import axios from "axios"
+import { AxiosError } from "axios"
 // import dotenv from "dotenv"
 // dotenv.config()
 
@@ -8,7 +9,7 @@ const api = axios.create({
   baseURL: API_URL,
 })
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use((config: any) => {
   const token = localStorage.getItem("token")
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -18,7 +19,7 @@ api.interceptors.request.use((config) => {
 
 export const login = async (email: string, password: string) => {
   try {
-    const response = await api.post('/auth/login', { email, password });
+    const response = await api.post<{ token: string }>('/auth/login', { email, password });
     
     // Store token in localStorage
     if (response.data.token) {
@@ -27,8 +28,8 @@ export const login = async (email: string, password: string) => {
     }
     
     return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
+  } catch (error: any) {
+    if (error instanceof AxiosError) {
       throw new Error(error.response?.data?.message || 'Login failed');
     }
     throw error;
