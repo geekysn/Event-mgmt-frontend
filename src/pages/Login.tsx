@@ -8,14 +8,17 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("")
   const { login, loginAsGuest } = useAuth()
   const navigate = useNavigate()
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null);
     try {
-      await login(email, password)
+      const response = await login(email, password)
       navigate("/events")
     } catch (error) {
-      console.error("Login failed:", error)
+      setError(error instanceof Error ? error.message : 'Login failed');
+    console.error('Login error:', error);
     }
   }
 

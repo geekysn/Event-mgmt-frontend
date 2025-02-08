@@ -17,9 +17,23 @@ api.interceptors.request.use((config) => {
 })
 
 export const login = async (email: string, password: string) => {
-  const response = await api.post("/auth/login", { email, password })
-  return response.data
-}
+  try {
+    const response = await api.post('/auth/login', { email, password });
+    
+    // Store token in localStorage
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+    }
+    
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Login failed');
+    }
+    throw error;
+  }
+};
 
 export const register = async (name: string, email: string, password: string) => {
   const response = await api.post("/auth/register", { name, email, password })
